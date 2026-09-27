@@ -3618,7 +3618,7 @@ window.DOTGLYPHS = {"0":[0,".###.|#...#|#..##|#.#.#|##..#|#...#|.###."],"1":[0,"
 <script>
 (function () {
   /* WORLD: DotWorld in a frame, loaded the first time it is opened and never torn down. */
-  var DW = "https://fablab503-collab.github.io/openstreetmap-dot/", DW_ORIGIN = new URL(DW).origin;
+  var DW = "world/", DW_ORIGIN = new URL(DW, location.href).origin;
   var layer = document.getElementById('dw-layer'), frame = null, ready = false, queue = [];
   function feed() {
     var P = window.__desk.posts, items = Object.keys(P).map(function (id) { var p = P[id]; return {

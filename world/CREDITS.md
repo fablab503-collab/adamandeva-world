@@ -1,0 +1,218 @@
+# Credits, data sources and licences
+
+**DotWorld is a fun personal experiment, built in conversation with Claude
+(Anthropic's Claude Code). Nothing here is my achievement alone.**
+
+It is **not affiliated with, endorsed by, or connected to** OpenStreetMap, the
+OpenStreetMap Foundation, OpenFreeMap, OpenMapTiles, MapLibre, the World Bank, the Wikimedia
+Foundation, ColorBrewer, or Nothing. No claim is made over any of their work.
+
+This project exists **only because those projects gave their work away**. It is
+meant to point at them, not to compete with them, replace them, or take anything
+from them. Every piece of map data, every tile, and most of the code underneath
+belongs to the people credited below. **If you like what you see here, the credit
+is theirs.** Please go and support them — links at the bottom.
+
+---
+
+## Adamandeva
+
+The desk's stories on the globe come from [Adamandeva](http://adamandeva.world), Daniel's
+technology desk. Each story names the newsroom whose reporting it retells, and that name
+travels with it onto the globe. The stories are the desk's; the reporting is theirs.
+
+## Map data
+
+**© OpenStreetMap contributors**, licensed under the
+[Open Database License (ODbL) 1.0](https://opendatacommons.org/licenses/odbl/).
+Every road, coastline, building and monument outline in this map is their work,
+contributed by hundreds of thousands of volunteers over two decades.
+
+Attribution must remain visible in any deployment. This app renders it itself,
+because the opaque dot canvas covers MapLibre's own attribution control.
+
+<https://www.openstreetmap.org/copyright>
+
+## Vector tiles
+
+**[OpenFreeMap](https://openfreemap.org/)** — free, open vector tiles served
+without an API key or sign-up, created and paid for by **Zsolt Ero**. Tiles
+follow the **[OpenMapTiles](https://openmaptiles.org/) schema**, which requires its own
+visible, linked credit.
+
+The attribution shown on the map is OpenFreeMap's own required string, taken from
+its TileJSON: *"OpenFreeMap © OpenMapTiles Data from © OpenStreetMap contributors"*.
+The first published version credited OpenStreetMap and OpenFreeMap but left out
+OpenMapTiles.
+
+Running a planet-wide tile server for free is an act of generosity. This project
+would not exist without it, and any real traffic should be met with a donation
+rather than a free ride.
+
+## Map renderer
+
+**[MapLibre GL JS](https://maplibre.org/)** — BSD-3-Clause. Vendored in
+`vendor/` so this page has no CDN dependency. MapLibre does all the genuinely
+hard work here: tile fetching, projection, the globe, camera handling and
+WebGL rendering. The dot lattice is a thin pass on top of their output.
+
+## Geocoding
+
+**[Nominatim](https://nominatim.org/)**, run by the **OpenStreetMap Foundation** —
+used for place search and for the country lookup behind "illuminate my country".
+Data ODbL, subject to the
+[Nominatim usage policy](https://operations.osmfoundation.org/policies/nominatim/).
+Requests are debounced to respect their one-per-second guidance.
+
+**[Open-Meteo](https://open-meteo.com/)** — the live weather in the WEATHER panel:
+current temperature, apparent temperature, sky (WMO code), wind, humidity and
+precipitation, at whatever place you last pointed at. Free, no key and no account,
+under **CC BY 4.0**. One request a place, carrying only a latitude and a longitude —
+and when those came from your own device they are the pair already rounded to two
+decimal places, about a kilometre, before anything is done with them.
+
+**[Wikipedia's Current events portal](https://en.wikipedia.org/wiki/Portal:Current_events)**
+(**CC BY-SA 4.0**) — the day's stories in THE WORLD, TODAY, read through the same public
+action API anyone can call, for today and yesterday. Each story keeps the link to its own
+source; the words are Wikipedia's editors' work, not mine. They carry no coordinates, so a
+story is placed by the first capital, country or demonym its own words name — a guess,
+and sometimes the wrong one.
+
+**[USGS earthquake feed](https://earthquake.usgs.gov/earthquakes/feed/)** (**public
+domain**, U.S. Geological Survey) — every earthquake over M4.5 in the last day. These come
+with their own coordinates and are exact.
+
+GDELT would have been the better source for world news — free, global, and geocoded — but
+it sends no cross-origin header, so a browser page cannot read it. Tried and dropped.
+
+## Statistics and datasets
+
+| Data | Source | Licence |
+|---|---|---|
+| World population, birth/death rates, urban share, land area, and the population of a chosen country | [World Bank Open Data](https://data.worldbank.org/) | CC BY 4.0 |
+| Population of every city over 15,000 people (34,091 of them) | [GeoNames](https://www.geonames.org/) `cities15000` | CC BY 4.0 |
+| The IANA time zone of each of the 195 capitals | [GeoNames](https://www.geonames.org/) `cities15000` | CC BY 4.0 |
+| Population of 644 French communes (the layer this replaced, Sep 2026) | [Wikidata](https://www.wikidata.org/) (P1082) | CC0 1.0 |
+| 195 national capitals, their populations and ISO 3166-1 alpha-2 codes | [Wikidata](https://www.wikidata.org/) (P36, P625, P1082, P297) | CC0 1.0 |
+| Country outlines for the 195 | [Natural Earth](https://www.naturalearthdata.com/) 1:50m admin 0 | public domain |
+| Population by country by year, 1960–2050 | [World Bank Open Data](https://data.worldbank.org/) (estimates, and source 40 projections) | CC BY 4.0 |
+| Historical borders, 1500–1994 | [Historical Basemaps](https://github.com/aourednik/historical-basemaps), Andreas Ourednik | GPL-3.0 |
+| The events of each year, 1500 onward | [Wikidata](https://www.wikidata.org/) (P585, P580, P619, sitelink counts) | CC0 1.0 |
+| Sizes, masses, spins, tilts, orbits and temperatures of the Sun, the eight planets, the Moon and Pluto | [NASA NSSDC Planetary Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/) | public domain |
+| Each body's precise figures — sidereal year and rotation, equatorial and polar radius, flattening, surface acceleration at equator and pole, J2, solar irradiance, the Moon's recession rate | [NASA NSSDC](https://nssdc.gsfc.nasa.gov/planetary/factsheet/) per-body sheets (`earthfact.html` and the rest) | public domain |
+| What each body actually looks like — the colour maps the space view samples per dot | [Solar System Scope textures](https://www.solarsystemscope.com/textures/), heavily downsampled | CC BY 4.0 |
+| The colour of sunlight — the Sun's effective temperature, 5772 K | [NASA NSSDC Sun fact sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html) | public domain |
+| Turning that temperature into a colour — the cubic fit of the Planckian locus | Kim et al. 2002, via [English Wikipedia, "Planckian locus"](https://en.wikipedia.org/wiki/Planckian_locus) | CC BY-SA 4.0 |
+| How fast the day is lengthening: +2.4 ms/century from the Moon's orbit, +1.72 ± 0.03 observed over 2,700 years | [English Wikipedia, "Tidal acceleration"](https://en.wikipedia.org/wiki/Tidal_acceleration) | CC BY-SA 4.0 |
+| Where each planet sits on its orbit at J2000 — mean anomaly, argument of perihelion, longitude of the ascending node | [English Wikipedia](https://en.wikipedia.org/) infoboxes | CC BY-SA 4.0 |
+| The Moon's phase — days since the new moon of 11 August 1999, modulo a mean synodic month of 29.53059 days | [English Wikipedia, "Lunar phase"](https://en.wikipedia.org/wiki/Lunar_phase), citing Seidelmann 1992 | CC BY-SA 4.0 |
+| Montpellier monuments + ranking | [Wikidata](https://www.wikidata.org/) & [OpenStreetMap](https://www.openstreetmap.org/) | CC0 1.0 / ODbL |
+| The best-known monuments of all 195 capitals | [Wikidata](https://www.wikidata.org/) (P625 + sitelink counts) | CC0 1.0 |
+| The outline of each of those monuments | [OpenStreetMap](https://www.openstreetmap.org/copyright) via [Overpass](https://overpass-api.de/) | ODbL 1.0 |
+
+The historical borders are **fetched from the project's own CDN at the moment you
+ask for them, never copied into this repository**: the dataset is GPL-3.0 and DotWorld's
+own code is MIT, and mixing those licences by redistribution is not something a map
+should do quietly. They are approximations drawn for illustration, not a legal record
+of any border.
+
+**Solar System Scope's textures are CC BY 4.0**, which asks for attribution and allows
+everything else: `data/planet-colours.json` is a downsample of them - 224x112 for the
+Earth, 64x32 for the rest - and it carries that credit in the file itself. Their maps are in turn built from
+NASA elevation and imagery. The Sun is the exception: its texture is used only for the
+mottling, because the real colour of the Sun is what 5772 K looks like, which is white.
+
+The solar system is drawn from **two-body Kepler orbits**. That is the standard
+approximation and it is good to a fraction of a degree from 1800 to 2050; outside
+that it drifts, and the panel says so rather than letting the picture imply a
+precision it does not have. Nothing is perturbed by anything else, so the Moon is
+the roughest of them - its node and its perigee really do move, and here they do
+not. **This is a picture to think with, not an ephemeris.** For real positions use
+[JPL Horizons](https://ssd.jpl.nasa.gov/horizons/).
+
+Monument ranking counts how many Wikipedia editions and sister projects cover each
+site — so the ordering is really the work of **Wikipedia's editors**. Montpellier's
+ten count Wikipedia editions only; the capitals' three count every sitelink, which is
+cheaper to ask for and is applied the same way to every candidate.
+
+## Colour
+
+**[ColorBrewer](https://colorbrewer2.org/)** — colour schemes by **Cynthia
+Brewer, Mark Harrower and The Pennsylvania State University**, Apache 2.0.
+The population ramp is their **YlOrRd**, reversed so luminance rises with
+population on a dark ground. Reference implementation seen in
+[Leaflet's choropleth example](https://leafletjs.com/examples/choropleth/).
+
+## Typefaces
+
+| Face | Used for | Licence |
+|---|---|---|
+| **Dotwork** | the DOTWORLD wordmark | SIL Open Font License 1.1 (`fonts/Dotwork-OFL.txt`) |
+| **Space Mono** | every readout, label and control | SIL Open Font License 1.1 |
+| **Space Grotesk** | bundled, reserved for headings | SIL Open Font License 1.1 |
+
+The dot-matrix look is inspired by **Nothing**'s visual language. Nothing's own
+**Ndot** typeface is licensed strictly for Nothing brand materials and is
+deliberately **not** used or shipped here; Dotwork is the openly licensed
+substitute. No association with Nothing is claimed or implied.
+
+## Built with
+
+**[Claude Code](https://claude.com/claude-code)** (Anthropic) — the whole thing
+was designed and written in a conversation, including the bugs and the fixes.
+
+---
+
+## Please support the upstream projects
+
+Everything above is given away for free by people and organisations who pay real
+costs to do it. If this project is worth anything to you, send it upstream:
+
+- **OpenStreetMap Foundation** — <https://supporting.openstreetmap.org/>
+- **OpenFreeMap** — <https://openfreemap.org/> (sponsorship / donation)
+- **MapLibre** — <https://opencollective.com/maplibre>
+- **Wikimedia Foundation** — <https://donate.wikimedia.org/>
+
+## This project's own code
+
+The original code in this repository — the halftone lattice, the UI, the data
+plumbing — is released under the **MIT Licence** (see `LICENSE`). That covers
+only the code written here. It does **not** and cannot relicense any of the data
+or libraries above, which stay under their own terms.
+
+## Routing — FOSSGIS e.V. / OSRM
+
+Turn-by-turn routes for GO SOMEWHERE come from the Open Source Routing Machine (OSRM,
+BSD-2-Clause) as run by **FOSSGIS e.V.** at https://routing.openstreetmap.de — the
+`routed-foot`, `routed-bike` and `routed-car` profiles, over OpenStreetMap data (© OpenStreetMap
+contributors, ODbL). It answers a browser directly and needs no key; it is a community service
+with a fair-use policy, and this page asks it once per GO and never polls. The public demo at
+router.project-osrm.org was tried first and ignores the profile, so it is not used.
+
+## The song
+
+*just turn it on for ten hours* — Daniel's own file, supplied by him for this page. The
+ten-hour original stays out of the repo (763 MB; GitHub refuses files over 100 MB); what is
+served is four loops of it, re-encoded to AAC at 128 kbps with a 10 ms fade at each end.
+No licence is claimed here beyond his say-so.
+
+## One story a country — the press, AllAfrica, Google News
+
+`data/news-by-country.json` is rebuilt every day by `scripts/news-by-country.mjs` from
+three kinds of source, in this order:
+
+- **The country's own press**, through its public RSS or Atom feed — national broadcasters
+  and newspapers, 172 feeds in 143 countries, listed by name and URL in
+  `scripts/news-feeds.json`. Each feed was probed live before it went in. What is taken is
+  one headline, its link and its date; the story stays on the outlet's site and the
+  outlet's name is shown beside the headline. Every one of them holds its own copyright.
+- **AllAfrica** (https://allafrica.com) — per-country headline feeds for the African
+  countries whose papers have no open feed of their own. The headlines are AllAfrica's
+  aggregation of African press; the stories are their authors'.
+- **Google News RSS** (https://news.google.com/rss) — searched for the country by name,
+  for the countries with no open press feed. Google supplies the ranking; the story and
+  the name shown are the originating outlet's, taken from the feed's own `<source>`.
+
+None of these needs a key or an account, and this page asks each once a day. The
+probe that chose them looked at 293 feeds; 96 were dead or closed to robots and are
+not used.

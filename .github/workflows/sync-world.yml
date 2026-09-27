@@ -1,0 +1,39 @@
+# Adamandeva and DotWorld are one site: the globe is served from this repo at /world/,
+# same origin as the desk. This copies DotWorld's site files in from its own repo, which
+# stays the source - every six hours (its daily news-by-country job runs at 05:20 UTC),
+# and on demand. Only a real change is committed.
+name: Sync DotWorld into /world
+on:
+  schedule:
+    - cron: '50 */6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: fablab503-collab/openstreetmap-dot
+          path: _dw
+      - name: Copy the site files
+        run: |
+          mkdir -p _new/music
+          cp -R _dw/index.html _dw/vendor _dw/fonts _dw/data _dw/LICENSE _dw/CREDITS.md _new/
+          cp _dw/music/*.m4a _new/music/
+          rm -rf world _dw
+          mv _new world
+      - name: Commit if anything changed
+        run: |
+          git config user.name "adamandeva-sync"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A world
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          git commit -m "Sync DotWorld into /world ($(date -u +%F))"
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
+        env:
+          GH_TOKEN: ${{ github.token }}
