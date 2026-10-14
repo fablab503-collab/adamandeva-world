@@ -68,6 +68,11 @@
 #dw-layer { position:fixed; inset:0; z-index:90; background:#000; display:none; }
 #dw-layer.on { display:block; }
 #dw-layer iframe { position:absolute; inset:0; width:100%; height:100%; border:0; background:#000; }
+/* AIRUMORS - the AI benchmark, full screen like World, in its own minimal look (airumors/) */
+#ai-layer { position:fixed; inset:0; z-index:90; background:var(--ground); display:none; }
+#ai-layer.on { display:block; }
+#ai-layer iframe { position:absolute; inset:0; width:100%; height:100%; border:0; background:var(--ground); }
+body.ai-on { overflow:hidden; }
 /* The tab bar: one iOS 27 piece on the desk's plain page - a floating glass bar with two
    tabs, News and World, that swaps between the desk and the globe the way an app does.
    The lens slides to the tab you are on; over the globe the glass goes dark. */
@@ -89,6 +94,7 @@
   background:rgba(0,47,108,.11); box-shadow:inset 0 1px 0 rgba(255,255,255,.55);
   transition:transform .5s cubic-bezier(.32,.72,0,1); }
 #tabbar.world .lens { transform:translateX(90px); }
+#tabbar.ai .lens { transform:translateX(180px); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #tabbar {
   background:rgba(22,26,34,.62); border-color:rgba(255,255,255,.1); box-shadow:0 12px 40px rgba(0,0,0,.5); } }
 :root[data-theme="dark"] #tabbar { background:rgba(22,26,34,.62); border-color:rgba(255,255,255,.1); box-shadow:0 12px 40px rgba(0,0,0,.5); }
@@ -3650,12 +3656,15 @@ window.DOTGLYPHS = {"0":[0,".###.|#...#|#..##|#.#.#|##..#|#...#|.###."],"1":[0,"
 <div id="dw-layer" aria-label="DotWorld" role="dialog">
   <div id="dw-wait">Loading the globe…</div>
 </div>
+<div id="ai-layer" aria-label="AiRumors" role="dialog"></div>
 <nav id="tabbar" role="tablist" aria-label="Adamandeva">
   <span class="lens" aria-hidden="true"></span>
   <button type="button" role="tab" id="tab-news" aria-selected="true">
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M7.5 9h9M7.5 12.5h9M7.5 16h5"/></svg>News</button>
   <button type="button" role="tab" id="tab-world" aria-selected="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.4 3.8 5.3 3.8 8.5s-1.2 6.1-3.8 8.5M12 3.5c-2.6 2.4-3.8 5.3-3.8 8.5s1.2 6.1 3.8 8.5"/></svg>World</button>
+  <button type="button" role="tab" id="tab-ai" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 4h9v4.5a4.5 4.5 0 0 1-9 0z"/><path d="M7.5 6H4.5a3 3 0 0 0 3 4M16.5 6h3a3 3 0 0 1-3 4M12 13v3.5M8.5 20.5h7M10 16.5h4v4h-4z"/></svg>AiRumors</button>
 </nav>
 <script>
 (function () {
@@ -3740,6 +3749,52 @@ window.DOTGLYPHS = {"0":[0,".###.|#...#|#..##|#.#.#|##..#|#...#|.###."],"1":[0,"
   }, true);
   if (location.hash === '#world') open();
   window.addEventListener('hashchange', function () { if (location.hash === '#world') open(); else if (layer.classList.contains('on') && location.hash) close(); });
+})();
+</script>
+<script>
+(function () {
+  /* AIRUMORS: the AI-model benchmark in a frame, loaded the first time it is opened and kept. */
+  var AI = "airumors/?embed=1";
+  var layer = document.getElementById('ai-layer'), bar = document.getElementById('tabbar'), frame = null;
+  var tn = document.getElementById('tab-news'), tw = document.getElementById('tab-world'), ta = document.getElementById('tab-ai');
+  if (!layer || !bar || !ta) return;
+  function open() {
+    if (!frame) {
+      frame = document.createElement('iframe');
+      frame.title = 'AiRumors';
+      frame.src = AI;
+      layer.appendChild(frame);
+    }
+    var dw = document.getElementById('dw-layer');
+    if (dw && dw.classList.contains('on')) { dw.classList.remove('on'); document.body.classList.remove('dw-on'); }
+    layer.classList.add('on');
+    document.body.classList.add('ai-on');
+    bar.classList.remove('world'); bar.classList.add('ai');
+    tn.setAttribute('aria-selected', 'false'); tw.setAttribute('aria-selected', 'false'); ta.setAttribute('aria-selected', 'true');
+    if (location.hash !== '#ai') history.replaceState(null, '', '#ai');
+  }
+  function close() {
+    if (!layer.classList.contains('on')) return;
+    layer.classList.remove('on');
+    document.body.classList.remove('ai-on');
+    bar.classList.remove('ai');
+    ta.setAttribute('aria-selected', 'false');
+    if (!bar.classList.contains('world')) tn.setAttribute('aria-selected', 'true');
+    if (location.hash === '#ai') history.replaceState(null, '', location.pathname);
+  }
+  ta.addEventListener('click', open);
+  tn.addEventListener('click', close);
+  tw.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  var desk = document.querySelector('#deskbar .wrap');
+  if (desk) {
+    var b = document.createElement('button');
+    b.className = 'dbtn'; b.id = 'ai-open'; b.type = 'button'; b.textContent = 'AiRumors';
+    b.addEventListener('click', open);
+    desk.appendChild(b);
+  }
+  if (location.hash === '#ai') open();
+  window.addEventListener('hashchange', function () { if (location.hash === '#ai') open(); else if (location.hash) close(); });
 })();
 </script>
 </body></html>
